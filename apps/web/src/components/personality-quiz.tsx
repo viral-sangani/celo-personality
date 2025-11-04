@@ -183,42 +183,42 @@ export function PersonalityQuiz() {
 
     return (
       <div className={`min-h-screen ${resultData.bgColor} ${resultData.textColor} p-0 relative overflow-hidden`}>
-        {/* Decorative blocks */}
-        <div className={`absolute top-0 right-0 w-48 h-48 ${resultData.accentColor} border-4 border-black`}></div>
-        <div className={`absolute bottom-0 left-0 w-64 h-32 border-4 border-black`}></div>
+        {/* Decorative blocks - hidden on mobile, visible on larger screens */}
+        <div className={`hidden md:block absolute top-0 right-0 w-32 h-32 lg:w-48 lg:h-48 ${resultData.accentColor} border-4 border-black`}></div>
+        <div className={`hidden md:block absolute bottom-0 left-0 w-48 h-24 lg:w-64 lg:h-32 border-4 border-black`}></div>
         
-        <div className="relative z-10 min-h-screen flex flex-col justify-between p-6 md:p-12">
+        <div className="relative z-10 min-h-screen flex flex-col justify-center p-4 sm:p-6 md:p-10 lg:p-12 gap-6 md:gap-8 lg:gap-12">
           {/* Header */}
           <div className="text-left max-w-5xl">
-            <div className="font-inter text-xs tracking-widest mb-4 uppercase font-bold">
+            <div className="font-inter text-[10px] sm:text-xs tracking-widest mb-3 md:mb-4 uppercase font-bold">
               YOUR CELO PERSONALITY
             </div>
-            <h1 className="font-alpina text-6xl md:text-8xl lg:text-9xl leading-none tracking-tighter mb-2">
+            <h1 className="font-alpina text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.9] tracking-tighter mb-2">
               {resultData.title.split(' ')[0]}{' '}
               <span className="italic">{resultData.title.split(' ').slice(1).join(' ')}</span>
             </h1>
-            <div className="font-inter text-lg md:text-xl font-semibold mt-4 uppercase tracking-tight">
+            <div className="font-inter text-base sm:text-lg md:text-xl font-semibold mt-3 md:mt-4 uppercase tracking-tight">
               {resultData.subtitle}
             </div>
           </div>
 
           {/* Description Block */}
-          <div className="max-w-3xl my-12">
-            <div className={`border-4 border-black ${resultData.accentColor} p-8 md:p-12`}>
-              <p className="font-inter text-lg md:text-xl leading-relaxed text-black">
+          <div className="max-w-3xl">
+            <div className={`border-3 sm:border-4 border-black ${resultData.accentColor} p-5 sm:p-6 md:p-10 lg:p-12`}>
+              <p className="font-inter text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-black">
                 {resultData.description}
               </p>
             </div>
           </div>
 
           {/* Traits Grid */}
-          <div className="grid grid-cols-2 gap-4 md:gap-6 max-w-4xl mb-12">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:gap-6 max-w-4xl">
             {resultData.traits.map((trait, index) => (
               <div
                 key={index}
-                className="border-4 border-black bg-black text-white p-4 md:p-6 transition-brutal hover:bg-white hover:text-black"
+                className="border-3 sm:border-4 border-black bg-black text-white p-3 sm:p-4 md:p-6 transition-brutal active:bg-white active:text-black md:hover:bg-white md:hover:text-black"
               >
-                <div className="font-inter font-750 text-sm md:text-base tracking-tight">
+                <div className="font-inter font-750 text-xs sm:text-sm md:text-base tracking-tight">
                   {trait}
                 </div>
               </div>
@@ -226,10 +226,10 @@ export function PersonalityQuiz() {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col md:flex-row gap-4 max-w-4xl">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 max-w-4xl">
             <button
               onClick={restartQuiz}
-              className="flex-1 border-4 border-black bg-black text-white px-8 py-6 font-inter font-750 text-lg uppercase tracking-tight transition-brutal hover:bg-white hover:text-black"
+              className="flex-1 border-3 sm:border-4 border-black bg-black text-white px-6 sm:px-8 py-4 sm:py-5 md:py-6 font-inter font-750 text-sm sm:text-base md:text-lg uppercase tracking-tight transition-brutal active:bg-white active:text-black md:hover:bg-white md:hover:text-black"
             >
               Take Again
             </button>
@@ -245,7 +245,7 @@ export function PersonalityQuiz() {
                   navigator.clipboard.writeText(text);
                 }
               }}
-              className={`flex-1 border-4 border-black bg-white text-black px-8 py-6 font-inter font-750 text-lg uppercase tracking-tight transition-brutal hover:bg-black hover:text-white`}
+              className={`flex-1 border-3 sm:border-4 border-black bg-white text-black px-6 sm:px-8 py-4 sm:py-5 md:py-6 font-inter font-750 text-sm sm:text-base md:text-lg uppercase tracking-tight transition-brutal active:bg-black active:text-white md:hover:bg-black md:hover:text-white`}
             >
               Share Result
             </button>
@@ -256,24 +256,24 @@ export function PersonalityQuiz() {
   }
 
   return (
-    <div className="min-h-screen bg-celo-tan text-black p-0 relative">
-      {/* Decorative color blocks */}
-      <div className="absolute top-0 left-0 w-24 h-24 bg-celo-yellow border-4 border-black"></div>
-      <div className="absolute top-0 right-0 w-32 h-full bg-celo-green border-l-4 border-black"></div>
-      <div className="absolute bottom-0 left-0 w-full h-16 bg-black"></div>
+    <div className="min-h-screen bg-celo-tan text-black p-0 relative overflow-x-hidden">
+      {/* Decorative color blocks - responsive sizing */}
+      <div className="absolute top-0 left-0 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 bg-celo-yellow border-3 sm:border-4 border-black"></div>
+      <div className="hidden sm:block absolute top-0 right-0 w-16 md:w-24 lg:w-32 h-full bg-celo-green border-l-3 sm:border-l-4 border-black"></div>
+      <div className="absolute bottom-0 left-0 w-full h-12 sm:h-14 md:h-16 bg-black"></div>
       
-      <div className="relative z-10 min-h-screen flex flex-col justify-between p-6 md:p-12 max-w-6xl mx-auto">
+      <div className="relative z-10 min-h-screen flex flex-col p-4 sm:p-6 md:p-10 lg:p-12 max-w-6xl mx-auto">
         {/* Progress Bar - Raw and Brutal */}
-        <div className="mb-16">
-          <div className="flex justify-between items-center mb-3">
-            <span className="font-inter text-xs uppercase tracking-widest font-bold">
+        <div className="mb-8 sm:mb-12 md:mb-16 pt-2 sm:pt-4">
+          <div className="flex justify-between items-center mb-2 sm:mb-3">
+            <span className="font-inter text-[10px] sm:text-xs uppercase tracking-widest font-bold">
               Q{currentQuestionIndex + 1}/{questions.length}
             </span>
-            <span className="font-inter text-xs uppercase tracking-widest font-bold">
+            <span className="font-inter text-[10px] sm:text-xs uppercase tracking-widest font-bold">
               {Math.round(progress)}%
             </span>
           </div>
-          <div className="w-full bg-white border-4 border-black h-8">
+          <div className="w-full bg-white border-3 sm:border-4 border-black h-6 sm:h-7 md:h-8">
             <div
               className="h-full bg-black transition-all duration-200"
               style={{ width: `${progress}%` }}
@@ -282,8 +282,8 @@ export function PersonalityQuiz() {
         </div>
 
         {/* Question - Poster-like Typography */}
-        <div className="flex-1 flex flex-col justify-center mb-16">
-          <h2 className="font-alpina text-5xl md:text-7xl lg:text-8xl leading-none tracking-tighter mb-16 max-w-4xl">
+        <div className="flex-1 flex flex-col justify-center mb-8 sm:mb-12 md:mb-16">
+          <h2 className="font-alpina text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl leading-[0.95] tracking-tighter mb-8 sm:mb-12 md:mb-16 max-w-4xl">
             {currentQuestion.question.split('…')[0]}
             {currentQuestion.question.includes('…') && (
               <span className="italic">…</span>
@@ -297,10 +297,10 @@ export function PersonalityQuiz() {
                 key={index}
                 onClick={() => handleAnswer(answer.personality, index)}
                 disabled={selectedAnswer !== null}
-                className={`w-full border-4 border-black px-8 py-6 md:py-8 font-inter text-xl md:text-2xl font-semibold text-left transition-brutal ${
+                className={`w-full border-3 sm:border-4 border-black px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6 lg:py-8 font-inter text-base sm:text-lg md:text-xl lg:text-2xl font-semibold text-left transition-brutal ${
                   selectedAnswer === index
                     ? "bg-black text-celo-yellow"
-                    : "bg-white text-black hover:bg-celo-yellow hover:text-black"
+                    : "bg-white text-black active:bg-celo-yellow active:text-black md:hover:bg-celo-yellow md:hover:text-black"
                 } ${selectedAnswer !== null && selectedAnswer !== index ? "opacity-30" : ""}`}
               >
                 {answer.text.toUpperCase()}
@@ -311,13 +311,13 @@ export function PersonalityQuiz() {
 
         {/* Back Navigation */}
         {currentQuestionIndex > 0 && selectedAnswer === null && (
-          <div className="mt-8">
+          <div className="pb-4 sm:pb-6 md:pb-8">
             <button
               onClick={() => {
                 setCurrentQuestionIndex(currentQuestionIndex - 1);
                 setAnswers(answers.slice(0, -1));
               }}
-              className="border-4 border-black bg-celo-brown text-white px-6 py-3 font-inter font-bold text-sm uppercase tracking-tight transition-brutal hover:bg-black"
+              className="border-3 sm:border-4 border-black bg-celo-brown text-white px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 font-inter font-bold text-xs sm:text-sm uppercase tracking-tight transition-brutal active:bg-black md:hover:bg-black"
             >
               ← Back
             </button>

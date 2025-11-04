@@ -28,6 +28,7 @@ const frame = {
 export const metadata: Metadata = {
   title: 'celo-personality',
   description: 'get your celo personality',
+  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
   openGraph: {
     title: 'celo-personality',
     description: 'get your celo personality',
