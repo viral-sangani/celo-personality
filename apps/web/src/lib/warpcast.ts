@@ -23,13 +23,13 @@ export async function getFarcasterManifest() {
   const isDevelopment =
     env.NEXT_PUBLIC_APP_ENV === "development" || appUrl.includes("localhost");
 
-  if (!hasValidAccountAssociation && !isDevelopment) {
-    throw new Error(
-      "Account association not configured. Please generate your account association at: https://farcaster.xyz/~/developers/mini-apps/manifest?domain=" +
-        new URL(appUrl).hostname +
-        " and set the NEXT_PUBLIC_FARCASTER_HEADER, NEXT_PUBLIC_FARCASTER_PAYLOAD, and NEXT_PUBLIC_FARCASTER_SIGNATURE environment variables."
-    );
-  }
+  // if (!hasValidAccountAssociation && !isDevelopment) {
+  //   throw new Error(
+  //     "Account association not configured. Please generate your account association at: https://farcaster.xyz/~/developers/mini-apps/manifest?domain=" +
+  //       new URL(appUrl).hostname +
+  //       " and set the NEXT_PUBLIC_FARCASTER_HEADER, NEXT_PUBLIC_FARCASTER_PAYLOAD, and NEXT_PUBLIC_FARCASTER_SIGNATURE environment variables."
+  //   );
+  // }
 
   // Use development fallback values if in development mode and no real values are set
   const accountAssociation = hasValidAccountAssociation
