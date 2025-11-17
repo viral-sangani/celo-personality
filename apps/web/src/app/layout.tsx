@@ -15,25 +15,25 @@ const frame = {
   version: "1",
   imageUrl: `${appUrl}/OIQ_HomeImage.png`,
   button: {
-    title: "Launch celo-personality",
+    title: "Launch Celo Identity Quiz",
     action: {
       type: "launch_frame",
-      name: "celo-personality",
+      name: "Celo Identity Quiz",
       url: appUrl,
-      splashImageUrl: `${appUrl}/icon.png`,
+      splashImageUrl: `${appUrl}/OIQ_Icon.png`,
       splashBackgroundColor: "#ffffff",
     },
   },
 };
 
 export const metadata: Metadata = {
-  title: "Celo Personality",
+  title: "Celo Identity Quiz",
   description: "Discover your Celo personality through an interactive quiz",
   icons: {
     icon: "/celo.avif",
   },
   openGraph: {
-    title: "Celo Personality",
+    title: "Celo Identity Quiz",
     description: "Discover your Celo personality through an interactive quiz",
     images: [`${appUrl}/OIQ_HomeImage.png`],
   },

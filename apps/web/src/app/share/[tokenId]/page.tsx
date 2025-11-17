@@ -63,8 +63,8 @@ export async function generateMetadata({
       action: {
         type: "launch_miniapp",
         url: appUrl,
-        name: "Celo Personality",
-        splashImageUrl: `${appUrl}/OIQ_HomeImage.png`,
+        name: "Celo Identity Quiz",
+        splashImageUrl: `${appUrl}/OIQ_Icon.png`,
         splashBackgroundColor: "#FFFFFF",
       },
     },
@@ -79,8 +79,8 @@ export async function generateMetadata({
       action: {
         type: "launch_frame",
         url: appUrl,
-        name: "Celo Personality",
-        splashImageUrl: `${appUrl}/OIQ_HomeImage.png`,
+        name: "Celo Identity Quiz",
+        splashImageUrl: `${appUrl}/OIQ_Icon.png`,
         splashBackgroundColor: "#FFFFFF",
       },
     },

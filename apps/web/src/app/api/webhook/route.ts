@@ -1,8 +1,8 @@
-import { sendFrameNotification } from "@/lib/notification-client";
 import {
   deleteUserNotificationDetails,
   setUserNotificationDetails,
 } from "@/lib/memory-store";
+import { sendFrameNotification } from "@/lib/notification-client";
 import { createPublicClient, http } from "viem";
 import { optimism } from "viem/chains";
 
@@ -81,7 +81,7 @@ export async function POST(request: Request) {
       // Send a test notification
       await sendFrameNotification({
         fid,
-        title: "Welcome to celo-personality!",
+        title: "Welcome to Celo Identity Quiz!",
         body: "You've successfully enabled notifications.",
       });
 

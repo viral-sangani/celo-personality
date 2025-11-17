@@ -6,7 +6,7 @@ import { env } from "@/lib/env";
  * @returns The farcaster manifest for the frame
  */
 export async function getFarcasterManifest() {
-  const frameName = "celo-personality";
+  const frameName = "Celo Identity Quiz";
   const appUrl = env.NEXT_PUBLIC_URL;
   const noindex =
     appUrl.includes("localhost") ||
@@ -55,7 +55,7 @@ export async function getFarcasterManifest() {
       homeUrl: appUrl,
       imageUrl: `${appUrl}/OIQ_HomeImage.png`,
       buttonTitle: `Launch App`,
-      splashImageUrl: `${appUrl}/OIQ_HomeImage.png`,
+      splashImageUrl: `${appUrl}/OIQ_Icon.png`,
       splashBackgroundColor: "#FFFFFF",
       webhookUrl: `${appUrl}/api/webhook`,
       // Metadata https://github.com/farcasterxyz/miniapps/discussions/191

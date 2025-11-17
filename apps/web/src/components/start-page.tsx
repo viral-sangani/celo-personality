@@ -63,7 +63,7 @@ export function StartPage({ onStart }: StartPageProps) {
           <div className="max-w-2xl mx-auto w-full flex flex-col items-center justify-center min-h-full py-12 sm:py-16 md:py-20">
             {/* Title */}
             <h1 className="font-alpina text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[0.95] tracking-tighter mb-6 sm:mb-8 md:mb-10 text-center">
-              Celo Personality Quiz
+              Celo Identity Quiz
             </h1>
 
             {/* Description */}
