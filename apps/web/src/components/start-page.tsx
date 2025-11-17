@@ -2,7 +2,9 @@
 
 import { useWalletConnection } from "@/hooks/use-wallet-connection";
 import { formatAddress } from "@/lib/ens";
+import { env } from "@/lib/env";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { WalletConnectButtons } from "./wallet-connect-buttons";
 
 interface StartPageProps {
@@ -18,6 +20,8 @@ export function StartPage({ onStart }: StartPageProps) {
     isFarcasterMiniapp,
   } = useWalletConnection();
   const [formattedAddress, setFormattedAddress] = useState<string>("");
+  const [secretCode, setSecretCode] = useState<string>("");
+  const [isSecretCodeValid, setIsSecretCodeValid] = useState<boolean>(false);
 
   // Hide global navbar when start page is active
   useEffect(() => {
@@ -41,8 +45,27 @@ export function StartPage({ onStart }: StartPageProps) {
     }
   }, [isConnected, address]);
 
-  // Note: Removed auto-navigate to allow users to see their wallet address
-  // and click START QUIZ when ready
+  // Validate secret code
+  useEffect(() => {
+    const expectedCode = env.NEXT_PUBLIC_EVENT_SECRET_CODE;
+    // If no secret code is configured, allow access
+    if (!expectedCode || expectedCode === "") {
+      setIsSecretCodeValid(true);
+      return;
+    }
+    // Check if entered code matches (case-insensitive, trimmed)
+    setIsSecretCodeValid(
+      secretCode.trim().toLowerCase() === expectedCode.trim().toLowerCase()
+    );
+  }, [secretCode]);
+
+  const handleStartQuiz = () => {
+    if (!isSecretCodeValid) {
+      toast.error("Please enter a valid secret code");
+      return;
+    }
+    onStart();
+  };
 
   return (
     <div className="h-screen bg-celo-tan text-black p-0 relative overflow-hidden flex flex-col">
@@ -73,6 +96,32 @@ export function StartPage({ onStart }: StartPageProps) {
               Being, Regenerative Soul, L2 Architect, or Stablecoin Pragmatist.
             </p>
 
+            {/* Secret Code Section */}
+            {env.NEXT_PUBLIC_EVENT_SECRET_CODE &&
+              env.NEXT_PUBLIC_EVENT_SECRET_CODE !== "" && (
+                <div className="w-full max-w-md space-y-3 mb-6">
+                  <div className="space-y-2">
+                    <label
+                      htmlFor="secret-code"
+                      className="font-inter text-sm sm:text-base font-750 text-black block text-center"
+                    >
+                      Enter Secret Code
+                    </label>
+                    <input
+                      id="secret-code"
+                      type="text"
+                      value={secretCode}
+                      onChange={(e) => setSecretCode(e.target.value)}
+                      placeholder="Enter code from Celo booth"
+                      className="w-full border-3 sm:border-4 border-black bg-white px-4 py-3 font-inter text-base sm:text-lg text-black placeholder:text-black/40 focus:outline-none focus:ring-0"
+                    />
+                    <p className="font-inter text-xs sm:text-sm text-center text-black/70">
+                      If you need the secret code, ask someone at the Celo booth
+                    </p>
+                  </div>
+                </div>
+              )}
+
             {/* Wallet Connection Section */}
             <div className="w-full max-w-md space-y-4">
               {isInitializing && isFarcasterMiniapp && !isConnected ? (
@@ -95,8 +144,13 @@ export function StartPage({ onStart }: StartPageProps) {
                     </div>
                   )}
                   <button
-                    onClick={onStart}
-                    className="btn-brutal w-full bg-celo-yellow text-black px-8 sm:px-10 md:px-12 py-5 sm:py-6 md:py-7 font-inter font-750 text-base sm:text-lg md:text-xl uppercase tracking-tight"
+                    onClick={handleStartQuiz}
+                    disabled={!isSecretCodeValid}
+                    className={`btn-brutal w-full px-8 sm:px-10 md:px-12 py-5 sm:py-6 md:py-7 font-inter font-750 text-base sm:text-lg md:text-xl uppercase tracking-tight ${
+                      isSecretCodeValid
+                        ? "bg-celo-yellow text-black"
+                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    }`}
                   >
                     START QUIZ
                   </button>
@@ -111,7 +165,7 @@ export function StartPage({ onStart }: StartPageProps) {
                     </div>
                   ) : (
                     <>
-                      <WalletConnectButtons onConnect={onStart} />
+                      <WalletConnectButtons onConnect={handleStartQuiz} />
                       {!isFarcasterMiniapp && (
                         <p className="font-inter text-xs sm:text-sm text-center text-black/70">
                           Please open this app in Farcaster to connect your
