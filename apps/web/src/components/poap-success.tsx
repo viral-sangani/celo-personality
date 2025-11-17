@@ -157,8 +157,18 @@ export function PoapSuccess({
   }, [tokenId, eventId, address, initialEventData]);
 
   const handleShare = async () => {
-    const eventName = eventDetails?.name || "Celo Personality POAP";
-    const shareText = `I just minted my Celo Personality POAP! ${eventName}`;
+    // Format personality type: capitalize each word
+    const formatPersonalityType = (type: PersonalityType): string => {
+      return type
+        .split(" ")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
+    };
+
+    const formattedPersonality = formatPersonalityType(personalityType);
+    const shareText = `I just took the Celo Onchain Identity Quiz!
+
+My identity: ${formattedPersonality}`;
     const appUrl = process.env.NEXT_PUBLIC_URL || window.location.origin;
     const shareUrl = `${appUrl}/share/${tokenId}`;
 
@@ -194,7 +204,7 @@ export function PoapSuccess({
       if (navigator.share) {
         try {
           await navigator.share({
-            title: "My Celo Personality POAP",
+            title: "Celo Onchain Identity Quiz",
             text: shareText,
             url: shareUrl,
           });
