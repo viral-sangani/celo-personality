@@ -1,8 +1,5 @@
 "use client";
-import { sdk } from "@farcaster/frame-sdk";
-// Use any types for Farcaster SDK compatibility
-type FrameContext = any;
-type AddFrameResult = any;
+import { sdk } from "@farcaster/miniapp-sdk";
 import {
   createContext,
   useCallback,
@@ -12,6 +9,9 @@ import {
   type ReactNode,
 } from "react";
 import FrameWalletProvider from "./frame-wallet-context";
+// Use any types for Farcaster SDK compatibility
+type FrameContext = any;
+type AddFrameResult = any;
 
 interface MiniAppContextType {
   isMiniAppReady: boolean;
@@ -27,7 +27,10 @@ interface MiniAppProviderProps {
   children: ReactNode;
 }
 
-export function MiniAppProvider({ children, addMiniAppOnLoad }: MiniAppProviderProps): JSX.Element {
+export function MiniAppProvider({
+  children,
+  addMiniAppOnLoad,
+}: MiniAppProviderProps): JSX.Element {
   const [context, setContext] = useState<FrameContext | null>(null);
   const [isMiniAppReady, setIsMiniAppReady] = useState(false);
 
@@ -60,16 +63,29 @@ export function MiniAppProvider({ children, addMiniAppOnLoad }: MiniAppProviderP
         return result;
       }
       return null;
-    } catch (error) {
-      console.error("[error] adding frame", error);
+    } catch (error: any) {
+      // Handle InvalidDomainManifest error gracefully
+      if (error?.name === "AddMiniApp.InvalidDomainManifest") {
+        console.warn(
+          "Domain manifest not configured. This is normal in development. " +
+            "To fix: Generate your domain manifest at https://farcaster.xyz/~/developers/mini-apps/manifest"
+        );
+      } else {
+        console.error("[error] adding frame", error);
+      }
       return null;
     }
   }, []);
 
   useEffect(() => {
     // on load, set the frame as ready
+    // Only try to add frame if not already added and if explicitly requested
     if (isMiniAppReady && !context?.client?.added && addMiniAppOnLoad) {
-      handleAddMiniApp();
+      // Add a small delay to ensure everything is ready
+      const timer = setTimeout(() => {
+        handleAddMiniApp();
+      }, 500);
+      return () => clearTimeout(timer);
     }
   }, [
     isMiniAppReady,

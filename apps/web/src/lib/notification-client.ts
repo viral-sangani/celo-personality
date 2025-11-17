@@ -1,10 +1,24 @@
-import { getUserNotificationDetails } from "@/lib/memory-store";
 import {
-  FrameNotificationDetails,
-  type SendNotificationRequest,
-  sendNotificationResponseSchema,
-} from "@farcaster/frame-sdk";
+  getUserNotificationDetails,
+  type FrameNotificationDetails,
+} from "@/lib/memory-store";
+import { z } from "zod";
 import { env } from "./env";
+
+// Types moved from deprecated @farcaster/frame-sdk
+interface SendNotificationRequest {
+  notificationId: string;
+  title: string;
+  body: string;
+  targetUrl: string;
+  tokens: string[];
+}
+
+const sendNotificationResponseSchema = z.object({
+  result: z.object({
+    successfulTokens: z.array(z.string()),
+  }),
+});
 
 const appUrl = env.NEXT_PUBLIC_URL || "";
 

@@ -1,10 +1,15 @@
 "use client";
-import { useMiniApp } from "@/contexts/miniapp-context";
 import { PersonalityQuiz } from "@/components/personality-quiz";
+import { StartPage } from "@/components/start-page";
+import { useMiniApp } from "@/contexts/miniapp-context";
+import { useWalletConnection } from "@/hooks/use-wallet-connection";
+import { useState } from "react";
 
 export default function Home() {
   const { isMiniAppReady } = useMiniApp();
-  
+  const { isConnected } = useWalletConnection();
+  const [showQuiz, setShowQuiz] = useState(false);
+
   if (!isMiniAppReady) {
     return (
       <main className="flex-1">
@@ -23,6 +28,12 @@ export default function Home() {
       </main>
     );
   }
-  
-  return <PersonalityQuiz />;
+
+  // Show quiz if wallet is connected and user has clicked start
+  if (isConnected && showQuiz) {
+    return <PersonalityQuiz />;
+  }
+
+  // Show start page
+  return <StartPage onStart={() => setShowQuiz(true)} />;
 }

@@ -1,11 +1,12 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
+import type { Metadata, Viewport } from "next";
+import { Inter } from "next/font/google";
+import "./globals.css";
 
-import { Navbar } from '@/components/navbar';
-import Providers from "@/components/providers"
+import { Navbar } from "@/components/navbar";
+import Providers from "@/components/providers";
+import { Toaster } from "react-hot-toast";
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ["latin"] });
 
 const appUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
 
@@ -26,17 +27,25 @@ const frame = {
 };
 
 export const metadata: Metadata = {
-  title: 'celo-personality',
-  description: 'get your celo personality',
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=5',
+  title: "Celo Personality",
+  description: "Discover your Celo personality through an interactive quiz",
+  icons: {
+    icon: "/celo.avif",
+  },
   openGraph: {
-    title: 'celo-personality',
-    description: 'get your celo personality',
+    title: "Celo Personality",
+    description: "Discover your Celo personality through an interactive quiz",
     images: [`${appUrl}/opengraph-image.png`],
   },
   other: {
     "fc:frame": JSON.stringify(frame),
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 export default function RootLayout({
@@ -51,9 +60,35 @@ export default function RootLayout({
         <div className="relative flex min-h-screen flex-col">
           <Providers>
             <Navbar />
-            <main className="flex-1">
-              {children}
-            </main>
+            <main className="flex-1">{children}</main>
+            <Toaster
+              position="top-center"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: "#000",
+                  color: "#fff",
+                  border: "3px solid #000",
+                  borderRadius: "0",
+                  fontFamily: "Inter, sans-serif",
+                  fontWeight: "600",
+                  textTransform: "uppercase",
+                  fontSize: "14px",
+                },
+                success: {
+                  iconTheme: {
+                    primary: "#fcff52",
+                    secondary: "#000",
+                  },
+                },
+                error: {
+                  iconTheme: {
+                    primary: "#ff4444",
+                    secondary: "#000",
+                  },
+                },
+              }}
+            />
           </Providers>
         </div>
       </body>

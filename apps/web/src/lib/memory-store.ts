@@ -1,4 +1,8 @@
-import type { FrameNotificationDetails } from "@farcaster/frame-sdk";
+// FrameNotificationDetails type (moved from deprecated @farcaster/frame-sdk)
+export interface FrameNotificationDetails {
+  url: string;
+  token: string;
+}
 
 // In-memory storage to replace Redis
 const notificationStore = new Map<string, FrameNotificationDetails>();
@@ -32,10 +36,13 @@ export async function deleteUserNotificationDetails(
 }
 
 // Helper function to get all stored notification details (for debugging)
-export function getAllNotificationDetails(): Array<{fid: string, details: FrameNotificationDetails}> {
-  const result: Array<{fid: string, details: FrameNotificationDetails}> = [];
+export function getAllNotificationDetails(): Array<{
+  fid: string;
+  details: FrameNotificationDetails;
+}> {
+  const result: Array<{ fid: string; details: FrameNotificationDetails }> = [];
   for (const [key, details] of notificationStore.entries()) {
-    const fid = key.replace(`${notificationServiceKey}:user:`, '');
+    const fid = key.replace(`${notificationServiceKey}:user:`, "");
     result.push({ fid, details });
   }
   return result;

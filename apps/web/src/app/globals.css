@@ -1,21 +1,46 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;750;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;750;800&display=swap");
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --color-celo-yellow: #fcff52;
+  --color-celo-green: #4e632a;
+  --color-celo-purple: #1a0329;
+  --color-celo-tan: #fbf6f1;
+  --color-celo-tan-dark: #e6e3d5;
+  --color-celo-brown: #635949;
+  --color-celo-pink: #f2a9e7;
+  --color-celo-orange: #f29e5f;
+  --color-celo-lime: #b2eba1;
+  --color-celo-blue: #8ac0f9;
+
+  --font-family-alpina: "GT Alpina", "Times New Roman", serif;
+  --font-family-inter: "Inter", sans-serif;
+
+  --letter-spacing-tighter: -0.02em;
+  --letter-spacing-tight: -0.01em;
+
+  --font-weight-750: 750;
+
+  --container-center: true;
+  --container-padding: 2rem;
+  --container-screen-2xl: 1400px;
+}
 
 @layer base {
   /* GT Alpina font face */
   @font-face {
-    font-family: 'GT Alpina';
-    src: url('https://fonts.cdnfonts.com/s/19141/GT-Alpina-Standard-Light.woff') format('woff');
+    font-family: "GT Alpina";
+    src: url("https://fonts.cdnfonts.com/s/19141/GT-Alpina-Standard-Light.woff")
+      format("woff");
     font-weight: 300;
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'GT Alpina';
-    src: url('https://fonts.cdnfonts.com/s/19141/GT-Alpina-Standard-Light-Italic.woff') format('woff');
+    font-family: "GT Alpina";
+    src: url("https://fonts.cdnfonts.com/s/19141/GT-Alpina-Standard-Light-Italic.woff")
+      format("woff");
     font-weight: 300;
     font-style: italic;
   }
@@ -23,14 +48,19 @@
   * {
     @apply border-black;
   }
-  
+
   body {
     @apply bg-celo-tan text-black;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'GT Alpina', 'Times New Roman', serif;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: "GT Alpina", "Times New Roman", serif;
     font-weight: 300;
     letter-spacing: -0.02em;
   }
@@ -38,7 +68,7 @@
 
 @layer utilities {
   .text-alpina {
-    font-family: 'GT Alpina', 'Times New Roman', serif;
+    font-family: "GT Alpina", "Times New Roman", serif;
     font-weight: 300;
   }
 
@@ -74,10 +104,80 @@
     transition: all 0.1s ease-in-out;
   }
 
+  /* Brutalist button style with offset shadow */
+  .btn-brutal {
+    border: 3px solid black;
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+    transition: all 0.15s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: translate(0, 0);
+  }
+
+  @media (min-width: 768px) {
+    .btn-brutal {
+      border-width: 4px;
+      box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+    }
+  }
+
+  /* Bounce animation on click */
+  .btn-brutal:active {
+    transform: translate(4px, 4px);
+    box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 1);
+  }
+
+  .btn-brutal:hover:not(:active) {
+    transform: translate(-1px, -1px);
+    box-shadow: 5px 5px 0px 0px rgba(0, 0, 0, 1);
+  }
+
+  /* Disabled state */
+  .btn-brutal:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: translate(0, 0);
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+  }
+
+  .btn-brutal:disabled:hover {
+    transform: translate(0, 0);
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+  }
+
+  /* Brutalist border container (non-interactive) */
+  .border-brutal-container {
+    border: 3px solid black;
+    box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+  }
+
+  @media (min-width: 768px) {
+    .border-brutal-container {
+      border-width: 4px;
+      box-shadow: 4px 4px 0px 0px rgba(0, 0, 0, 1);
+    }
+  }
+
   /* Better tap targets for mobile */
   @media (max-width: 640px) {
-    button, a {
+    button,
+    a {
       min-height: 44px;
     }
+  }
+
+  /* Hide navbar when quiz is active or start page is active */
+  body.quiz-active header,
+  body.start-page-active header,
+  body.share-page-active header {
+    display: none;
+  }
+
+  /* Hide scrollbars but keep scrolling functionality */
+  .overflow-y-auto {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  .overflow-y-auto::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 }
