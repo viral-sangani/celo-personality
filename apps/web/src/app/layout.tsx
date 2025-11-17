@@ -13,7 +13,7 @@ const appUrl = process.env.NEXT_PUBLIC_URL || "http://localhost:3000";
 // Embed metadata for Farcaster sharing
 const frame = {
   version: "1",
-  imageUrl: `${appUrl}/opengraph-image.png`,
+  imageUrl: `${appUrl}/OIQ_HomeImage.png`,
   button: {
     title: "Launch celo-personality",
     action: {
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Celo Personality",
     description: "Discover your Celo personality through an interactive quiz",
-    images: [`${appUrl}/opengraph-image.png`],
+    images: [`${appUrl}/OIQ_HomeImage.png`],
   },
   other: {
     "fc:frame": JSON.stringify(frame),

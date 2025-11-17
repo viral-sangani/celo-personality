@@ -6,6 +6,7 @@ import {
   useContext,
   useEffect,
   useState,
+  type ReactElement,
   type ReactNode,
 } from "react";
 import FrameWalletProvider from "./frame-wallet-context";
@@ -30,7 +31,7 @@ interface MiniAppProviderProps {
 export function MiniAppProvider({
   children,
   addMiniAppOnLoad,
-}: MiniAppProviderProps): JSX.Element {
+}: MiniAppProviderProps): ReactElement {
   const [context, setContext] = useState<FrameContext | null>(null);
   const [isMiniAppReady, setIsMiniAppReady] = useState(false);
 

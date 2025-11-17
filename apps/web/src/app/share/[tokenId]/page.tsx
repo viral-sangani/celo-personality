@@ -52,7 +52,7 @@ export async function generateMetadata({
   const eventDescription =
     event?.description ||
     "Discover your Celo personality through an interactive quiz";
-  const imageUrl = event?.image_url || `${appUrl}/opengraph-image.png`;
+  const imageUrl = event?.image_url || `${appUrl}/OIQ_HomeImage.png`;
 
   // Create MiniApp embed metadata
   const miniappEmbed = {
@@ -64,7 +64,7 @@ export async function generateMetadata({
         type: "launch_miniapp",
         url: appUrl,
         name: "Celo Personality",
-        splashImageUrl: `${appUrl}/opengraph-image.png`,
+        splashImageUrl: `${appUrl}/OIQ_HomeImage.png`,
         splashBackgroundColor: "#FFFFFF",
       },
     },
@@ -80,7 +80,7 @@ export async function generateMetadata({
         type: "launch_frame",
         url: appUrl,
         name: "Celo Personality",
-        splashImageUrl: `${appUrl}/opengraph-image.png`,
+        splashImageUrl: `${appUrl}/OIQ_HomeImage.png`,
         splashBackgroundColor: "#FFFFFF",
       },
     },
