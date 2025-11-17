@@ -108,9 +108,37 @@ const POAP_API_BASE = "https://api.poap.tech";
 const POAP_AUTH_BASE = "https://auth.accounts.poap.xyz";
 
 /**
+ * Validate that POAP environment variables are properly configured
+ * Throws an error if using build-time placeholders
+ */
+function validatePoapConfig() {
+  if (
+    env.POAP_API_KEY === "build-time-placeholder" ||
+    env.POAP_CLIENT_ID === "build-time-placeholder" ||
+    env.POAP_CLIENT_SECRET === "build-time-placeholder" ||
+    env.POAP_EVENT_ID_MINI_APP_MAXI === 0 ||
+    env.POAP_EVENT_ID_VERIFIED_HUMAN === 0 ||
+    env.POAP_EVENT_ID_IMPACT_REGEN === 0 ||
+    env.POAP_EVENT_ID_L2_BELIEVER === 0 ||
+    env.POAP_EVENT_ID_STABLECOIN_SAVVY === 0 ||
+    env.POAP_SECRET_CODE_MINI_APP_MAXI === "build-time-placeholder" ||
+    env.POAP_SECRET_CODE_VERIFIED_HUMAN === "build-time-placeholder" ||
+    env.POAP_SECRET_CODE_IMPACT_REGEN === "build-time-placeholder" ||
+    env.POAP_SECRET_CODE_L2_BELIEVER === "build-time-placeholder" ||
+    env.POAP_SECRET_CODE_STABLECOIN_SAVVY === "build-time-placeholder"
+  ) {
+    throw new Error(
+      "POAP environment variables are not configured. Please set all POAP_* environment variables in your Vercel project settings."
+    );
+  }
+}
+
+/**
  * Get a valid access token, generating a new one if expired
  */
 export async function getAccessToken(): Promise<string> {
+  validatePoapConfig();
+
   // Check if we have a valid cached token
   if (cachedToken && Date.now() < cachedToken.expiresAt) {
     return cachedToken.accessToken;
@@ -154,6 +182,8 @@ export async function getAccessToken(): Promise<string> {
 export function getEventIdForPersonality(
   personalityType: PersonalityType
 ): number {
+  validatePoapConfig();
+
   const mapping: Record<PersonalityType, number> = {
     "mini app maxi": env.POAP_EVENT_ID_MINI_APP_MAXI,
     "verified human": env.POAP_EVENT_ID_VERIFIED_HUMAN,
@@ -171,6 +201,8 @@ export function getEventIdForPersonality(
 export function getSecretCodeForPersonality(
   personalityType: PersonalityType
 ): string {
+  validatePoapConfig();
+
   const mapping: Record<PersonalityType, string> = {
     "mini app maxi": env.POAP_SECRET_CODE_MINI_APP_MAXI,
     "verified human": env.POAP_SECRET_CODE_VERIFIED_HUMAN,

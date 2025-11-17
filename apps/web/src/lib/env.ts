@@ -5,19 +5,51 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     JWT_SECRET: z.string().min(1).optional().default("build-time-placeholder"),
-    POAP_API_KEY: z.string().min(1),
-    POAP_CLIENT_ID: z.string().min(1),
-    POAP_CLIENT_SECRET: z.string().min(1),
-    POAP_EVENT_ID_MINI_APP_MAXI: z.coerce.number(),
-    POAP_EVENT_ID_VERIFIED_HUMAN: z.coerce.number(),
-    POAP_EVENT_ID_IMPACT_REGEN: z.coerce.number(),
-    POAP_EVENT_ID_L2_BELIEVER: z.coerce.number(),
-    POAP_EVENT_ID_STABLECOIN_SAVVY: z.coerce.number(),
-    POAP_SECRET_CODE_MINI_APP_MAXI: z.string().min(1),
-    POAP_SECRET_CODE_VERIFIED_HUMAN: z.string().min(1),
-    POAP_SECRET_CODE_IMPACT_REGEN: z.string().min(1),
-    POAP_SECRET_CODE_L2_BELIEVER: z.string().min(1),
-    POAP_SECRET_CODE_STABLECOIN_SAVVY: z.string().min(1),
+    POAP_API_KEY: z
+      .string()
+      .min(1)
+      .optional()
+      .default("build-time-placeholder"),
+    POAP_CLIENT_ID: z
+      .string()
+      .min(1)
+      .optional()
+      .default("build-time-placeholder"),
+    POAP_CLIENT_SECRET: z
+      .string()
+      .min(1)
+      .optional()
+      .default("build-time-placeholder"),
+    POAP_EVENT_ID_MINI_APP_MAXI: z.coerce.number().optional().default(0),
+    POAP_EVENT_ID_VERIFIED_HUMAN: z.coerce.number().optional().default(0),
+    POAP_EVENT_ID_IMPACT_REGEN: z.coerce.number().optional().default(0),
+    POAP_EVENT_ID_L2_BELIEVER: z.coerce.number().optional().default(0),
+    POAP_EVENT_ID_STABLECOIN_SAVVY: z.coerce.number().optional().default(0),
+    POAP_SECRET_CODE_MINI_APP_MAXI: z
+      .string()
+      .min(1)
+      .optional()
+      .default("build-time-placeholder"),
+    POAP_SECRET_CODE_VERIFIED_HUMAN: z
+      .string()
+      .min(1)
+      .optional()
+      .default("build-time-placeholder"),
+    POAP_SECRET_CODE_IMPACT_REGEN: z
+      .string()
+      .min(1)
+      .optional()
+      .default("build-time-placeholder"),
+    POAP_SECRET_CODE_L2_BELIEVER: z
+      .string()
+      .min(1)
+      .optional()
+      .default("build-time-placeholder"),
+    POAP_SECRET_CODE_STABLECOIN_SAVVY: z
+      .string()
+      .min(1)
+      .optional()
+      .default("build-time-placeholder"),
   },
   client: {
     NEXT_PUBLIC_URL: z
