@@ -58,6 +58,15 @@ export function MiniAppProvider({
   }, [isMiniAppReady, setMiniAppReady]);
 
   const handleAddMiniApp = useCallback(async () => {
+    if (typeof sdk?.actions?.addFrame !== "function") {
+      if (process.env.NODE_ENV === "development") {
+        console.warn(
+          "[MiniApp] addFrame action unavailable. This usually means you're not running inside Farcaster."
+        );
+      }
+      return null;
+    }
+
     try {
       const result = await sdk.actions.addFrame();
       if (result) {

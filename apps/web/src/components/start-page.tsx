@@ -160,16 +160,21 @@ export function StartPage({ onStart }: StartPageProps) {
                   {isConnecting ? (
                     <div className="text-center">
                       <p className="font-inter text-sm sm:text-base mb-4">
-                        Connecting to your Farcaster wallet...
+                        {isFarcasterMiniapp
+                          ? "Connecting to your Farcaster wallet..."
+                          : "Connecting to your wallet..."}
                       </p>
                     </div>
                   ) : (
                     <>
-                      <WalletConnectButtons onConnect={handleStartQuiz} />
+                      <WalletConnectButtons
+                        onConnect={handleStartQuiz}
+                        isSecretCodeValid={isSecretCodeValid}
+                      />
                       {!isFarcasterMiniapp && (
                         <p className="font-inter text-xs sm:text-sm text-center text-black/70">
-                          Please open this app in Farcaster to connect your
-                          wallet
+                          Connect your wallet using WalletConnect or open this
+                          app in Farcaster
                         </p>
                       )}
                     </>

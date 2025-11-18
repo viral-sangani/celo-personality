@@ -1,6 +1,7 @@
 "use client";
 
 import { useMiniApp } from "@/contexts/miniapp-context";
+import { useAppKit } from "@reown/appkit/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 
@@ -11,6 +12,8 @@ interface UseWalletConnectionReturn {
   address: string | undefined;
   isFarcasterMiniapp: boolean;
   connectFarcaster: () => Promise<void>;
+  connectReown: () => Promise<void>;
+  connectWallet: () => Promise<void>;
   disconnect: () => Promise<void>;
   error: Error | null;
 }
@@ -20,6 +23,7 @@ export function useWalletConnection(): UseWalletConnectionReturn {
   const { connect, connectors, isPending: isWagmiConnecting } = useConnect();
   const { disconnect: wagmiDisconnect } = useDisconnect();
   const { context, isMiniAppReady } = useMiniApp();
+  const { open: openAppKit } = useAppKit();
 
   const [error, setError] = useState<Error | null>(null);
   const [isConnecting, setIsConnecting] = useState(false);
@@ -29,6 +33,32 @@ export function useWalletConnection(): UseWalletConnectionReturn {
   // Detect if we're in Farcaster miniapp
   const isFarcasterMiniapp = Boolean(context?.client);
   const farcasterConnectorId = useMemo(() => "farcaster", []);
+
+  const connectReown = useCallback(async () => {
+    try {
+      setError(null);
+
+      if (process.env.NODE_ENV === "development") {
+        console.log("[Wallet] Opening Reown AppKit modal for WalletConnect...");
+      }
+
+      // Use Reown's useAppKit hook to open the modal
+      // The modal will handle WalletConnect, Coinbase, Injected, and other wallet connections
+      openAppKit({ view: "Connect" });
+
+      // Note: The connection will be handled by the AppKit modal
+      // We don't need to manually connect here - the modal handles it
+      // The connection state will be updated automatically via Wagmi
+      // Don't set isConnecting here as the modal handles its own loading states
+    } catch (err) {
+      const error =
+        err instanceof Error
+          ? err
+          : new Error("Failed to open wallet connection");
+      setError(error);
+      throw error;
+    }
+  }, [openAppKit]);
 
   const connectFarcaster = useCallback(async () => {
     try {
@@ -90,6 +120,17 @@ export function useWalletConnection(): UseWalletConnectionReturn {
       setIsConnecting(false);
     }
   }, [connect, connectors, farcasterConnectorId]);
+
+  // Unified connect function that tries Farcaster first, then Reown
+  const connectWallet = useCallback(async () => {
+    if (isFarcasterMiniapp) {
+      // In Farcaster, use Farcaster connector
+      return connectFarcaster();
+    } else {
+      // Outside Farcaster, use Reown/WalletConnect
+      return connectReown();
+    }
+  }, [isFarcasterMiniapp, connectFarcaster, connectReown]);
 
   // Track initialization state - waiting for both miniapp SDK and Wagmi connectors
   // According to Farcaster docs: "If a user already has a connected wallet the connector
@@ -201,6 +242,8 @@ export function useWalletConnection(): UseWalletConnectionReturn {
     address,
     isFarcasterMiniapp,
     connectFarcaster,
+    connectReown,
+    connectWallet,
     disconnect,
     error,
   };
