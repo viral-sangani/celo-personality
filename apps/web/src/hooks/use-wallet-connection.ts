@@ -34,6 +34,19 @@ export function useWalletConnection(): UseWalletConnectionReturn {
   const isFarcasterMiniapp = Boolean(context?.client);
   const farcasterConnectorId = useMemo(() => "farcaster", []);
 
+  // Debug logging for Farcaster detection
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.log("[Wallet] Farcaster detection:", {
+        isFarcasterMiniapp,
+        hasContext: Boolean(context),
+        hasClient: Boolean(context?.client),
+        connectorsCount: connectors.length,
+        connectorIds: connectors.map((c) => c.id),
+      });
+    }
+  }, [isFarcasterMiniapp, context, connectors]);
+
   const connectReown = useCallback(async () => {
     try {
       setError(null);
@@ -123,14 +136,28 @@ export function useWalletConnection(): UseWalletConnectionReturn {
 
   // Unified connect function that tries Farcaster first, then Reown
   const connectWallet = useCallback(async () => {
+    if (process.env.NODE_ENV === "development") {
+      console.log("[Wallet] connectWallet called:", {
+        isFarcasterMiniapp,
+        connectorsAvailable: connectors.length,
+        connectorIds: connectors.map((c) => c.id),
+      });
+    }
+
     if (isFarcasterMiniapp) {
       // In Farcaster, use Farcaster connector
+      if (process.env.NODE_ENV === "development") {
+        console.log("[Wallet] Using Farcaster connector");
+      }
       return connectFarcaster();
     } else {
       // Outside Farcaster, use Reown/WalletConnect
+      if (process.env.NODE_ENV === "development") {
+        console.log("[Wallet] Using Reown/WalletConnect");
+      }
       return connectReown();
     }
-  }, [isFarcasterMiniapp, connectFarcaster, connectReown]);
+  }, [isFarcasterMiniapp, connectFarcaster, connectReown, connectors]);
 
   // Track initialization state - waiting for both miniapp SDK and Wagmi connectors
   // According to Farcaster docs: "If a user already has a connected wallet the connector

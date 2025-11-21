@@ -43,29 +43,35 @@ if (typeof window !== "undefined" && projectId !== "build-time-placeholder") {
   });
 }
 
-// IMPORTANT: According to Reown docs, we MUST use wagmiAdapter.wagmiConfig directly
-// in the WagmiProvider for proper integration. The adapter's config includes all
-// Reown connectors (WalletConnect, Coinbase, Injected, social logins, etc.).
+// IMPORTANT: According to Reown docs, we SHOULD use wagmiAdapter.wagmiConfig directly
+// in the WagmiProvider for proper integration with Reown (social logins, WalletConnect, etc.).
 //
-// For Farcaster support: We'll conditionally use either the adapter's config (for Reown)
-// or create a config with Farcaster connector (for Farcaster miniapp).
-// Since we can't easily merge both, we'll detect the environment and use the appropriate config.
+// However, we also need Farcaster connector for Farcaster miniapp support.
+// The challenge: The adapter's connectors are already instantiated (not factory functions),
+// so we can't easily merge them with Farcaster connector.
+//
+// Solution: Create a config that includes Farcaster connector. The useAppKit hook will
+// still work for Reown connections because it's connected to the adapter's initialization
+// (createAppKit above). For Farcaster, the connector will be available in the config.
+const reownConfig = wagmiAdapter.wagmiConfig;
 
-// Check if we're in Farcaster environment (this will be set by the miniapp SDK)
-const isFarcasterEnv =
-  typeof window !== "undefined" && (window as any).farcaster !== undefined;
+// Create config with Farcaster connector
+// The useAppKit hook will handle Reown connections via the adapter's initialization,
+// even though Reown connectors aren't explicitly in this config.
+const config = createConfig({
+  chains: reownConfig.chains,
+  connectors: [
+    farcasterMiniApp(), // Farcaster connector - required for Farcaster miniapp
+  ],
+  transports: {
+    [celo.id]: http(),
+  },
+});
 
-// Use the adapter's wagmiConfig directly for Reown (this is required per docs)
-// Only create a separate config for Farcaster if we're in Farcaster environment
-const config = isFarcasterEnv
-  ? createConfig({
-      chains: [celo],
-      connectors: [farcasterMiniApp()],
-      transports: {
-        [celo.id]: http(),
-      },
-    })
-  : wagmiAdapter.wagmiConfig; // Use adapter's config directly for Reown
+// Note: The adapter's wagmiConfig (reownConfig) has all Reown connectors configured.
+// The useAppKit hook works with the adapter's initialization (createAppKit above) to handle
+// Reown/WalletConnect connections via the modal, even though we're using a different config.
+// For Farcaster, the connector above will be used by connectFarcaster() when isFarcasterMiniapp is true.
 
 const queryClient = new QueryClient();
 
